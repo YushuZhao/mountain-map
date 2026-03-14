@@ -1,112 +1,48 @@
-# 🏔️ 中国名山推荐地图
+# 🏔️ 春山昂首 (Awakening Mountains)
 
-基于 React + ECharts 的交互式中国名山推荐地图
+一个基于 React + ECharts 的交互式中国名山地图，支持一键生成打卡海报。
 
-## ✨ 特性
+## ✨ 功能特点
 
-- 🎨 清新的春天配色风格
-- 🗺️ 基于真实地理数据的中国地图
-- 📍 可交互的山峰标注（点击、缩放、拖拽）
-- ✨ 涟漪动画效果
-- 💡 详细的悬浮提示信息
-- 📱 响应式设计，支持移动端
+- **地图交互**：全屏可交互的中国地图（支持缩放、拖拽）。
+- **个性化标注**：支持自定义山峰坐标、图标及描述文案。
+- **海报生成**：内置截图引擎，智能修正地图视角，一键导出 900x1200 竖屏海报。
 
 ## 🚀 快速开始
 
-### 安装依赖
-
 ```bash
+# 1. 安装依赖
 npm install
-```
 
-### 启动开发服务器
-
-```bash
+# 2. 本地运行
 npm run dev
-```
 
-浏览器会自动打开 `http://localhost:3000`
-
-### 构建生产版本
-
-```bash
+# 3. 生产构建
 npm run build
 ```
 
-构建产物会输出到 `dist` 目录
+## 🛠️ 数据配置
 
-### 预览生产版本
-
-```bash
-npm run preview
-```
-
-## 📦 技术栈
-
-- **React 18** - UI 框架
-- **Vite** - 构建工具
-- **ECharts 5** - 数据可视化
-- **echarts-for-react** - React ECharts 封装
-
-## 📂 项目结构
-
-```
-mountain-map/
-├── src/
-│   ├── components/
-│   │   ├── MountainMap.jsx      # 地图组件
-│   │   └── MountainMap.css      # 地图样式
-│   ├── data/
-│   │   └── mountains.js         # 山峰数据
-│   ├── App.jsx                  # 主应用组件
-│   ├── App.css                  # 主应用样式
-│   ├── main.jsx                 # 入口文件
-│   └── index.css                # 全局样式
-├── index.html                    # HTML 模板
-├── vite.config.js               # Vite 配置
-└── package.json                 # 项目配置
-```
-
-## 🎯 标注的名山
-
-- 🏔️ **峨眉山**（四川）- 云海佛光
-- 🍄 **梵净山**（贵州）- 梵天净土
-- 🌿 **武功山**（江西）- 高山草甸
-- 🌲 **黄山**（安徽）- 奇松怪石
-
-## 🛠️ 自定义
-
-### 添加新的山峰
-
-编辑 `src/data/mountains.js` 文件：
+如需添加或修改地图上的山峰，只需编辑 `src/data/mountains.js` 文件：
 
 ```javascript
 export const mountainData = [
   {
-    name: '泰山',
-    value: [117.1, 36.25, 100],  // [经度, 纬度, 数值]
-    label: '五岳独尊',
-    province: '山东',
-    color: '#E63946',
-    icon: '⛰️',
-    description: '五岳之首，中华文明的象征'
-  },
-  // ... 更多山峰
+    name: '泰山',                 // 标题
+    value: [117.1, 36.25, 100],  // [经度, 纬度, 权重]
+    label: '五岳独尊',             // 副标题
+    province: '山东',             // 省份
+    color: '#E63946',            // 标记颜色
+    icon: '⛰️',                   // 顶部图标
+  }
 ]
 ```
 
-### 修改配色
+## 📦 技术栈
 
-在 `src/index.css` 中修改全局配色：
+- React 18 + Vite
+- ECharts 5 (数据可视化)
+- html2canvas (海报截图)
 
-```css
-body {
-  background: linear-gradient(135deg, #your-color-1 0%, #your-color-2 100%);
-}
-```
-
-在 `src/components/MountainMap.jsx` 中修改地图配色。
-
-## 📄 许可
-
-MIT License
+---
+*「山不来见我，我便向山走去」*

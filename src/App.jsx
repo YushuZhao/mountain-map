@@ -184,8 +184,8 @@ function App() {
       <div className="poster-offscreen-container">
         <div className="poster-template" ref={posterTemplateRef}>
           <header className="poster-header">
-            <h1>中国名山推荐 <span className="title-icon">↓</span></h1>
-            <p className="subtitle">Best Mountain Destinations</p>
+            <h1>春山昂首 <span className="title-icon">⛰️</span></h1>
+            <p className="subtitle">Awakening Mountains</p>
           </header>
 
           <div className="poster-map-inner-container">
@@ -200,12 +200,13 @@ function App() {
             )}
           </div>
 
+          {/* 底部落款 */}
           <footer className="poster-footer">
             <div className="logo-container">
-              <span className="logo-main">山河文旅</span>
+              <span className="logo-main">赴山海</span>
               <div className="logo-sub">
-                <span>Mountains &</span>
-                <span>Rivers Tourism</span>
+                <span>To The Mountains</span>
+                <span>And Seas</span>
               </div>
             </div>
           </footer>
@@ -223,7 +224,7 @@ function App() {
             <div className="preview-img-container">
               <img src={previewImage} alt="生成的海报" className="preview-img" />
             </div>
-            <p className="preview-tip">你已经成功定格了这片绝美风景！</p>
+            <p className="preview-tip">「山不来见我，我便向山走去」</p>
           </div>
         </div>
       )}
