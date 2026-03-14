@@ -1,0 +1,296 @@
+/* ==================
+   全局与首页地图
+   ================== */
+.app-wrapper {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.home-map-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #E8DCC4; /* 底色放到容器上，保证导出 ECharts 截图是透明的 */
+}
+
+.loading-screen {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #E8DCC4;
+  color: #4A3320;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(74, 51, 32, 0.1);
+  border-top: 4px solid #4A3320;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==================
+   隐藏的海报模板引擎 (核心截图区域)
+   ================== */
+.poster-offscreen-container {
+  position: absolute;
+  /* 不要用负数定位，某些浏览器和 html2canvas 会直接不渲染视野外的 Canvas */
+  top: 0;
+  left: 0;
+  z-index: -1; /* 藏在全屏地图后面 */
+  opacity: 0.01; /* 几乎透明，但对 html2canvas 是可见的(不能设为 0 或 display:none) */
+  pointer-events: none;
+}
+
+.poster-template {
+  position: relative;
+  /* 强制固定海报输出尺寸，保证生成的图片比例完美 */
+  width: 900px;
+  height: 1200px;
+  background-color: #F4EAD1;
+}
+
+.poster-map-inner-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* 海报模板里的文字样式 */
+.poster-header {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  z-index: 10;
+}
+
+.poster-header h1 {
+  color: #4A3320;
+  font-size: 58px;
+  font-weight: 900;
+  margin-bottom: 5px;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+}
+
+.title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background-color: #4A3320;
+  color: #F4EAD1;
+  border-radius: 50%;
+  font-size: 26px;
+  margin-left: 12px;
+  font-weight: bold;
+}
+
+.poster-header .subtitle {
+  color: #8C7B6B;
+  font-size: 24px;
+  font-weight: 500;
+  font-family: Arial, sans-serif;
+  letter-spacing: 1px;
+}
+
+.poster-footer {
+  position: absolute;
+  bottom: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-main {
+  font-size: 42px;
+  font-weight: 900;
+  color: #1A1A1A;
+  font-family: "STKaiti", "KaiTi", serif;
+  letter-spacing: 2px;
+}
+
+.logo-sub {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  color: #4A3320;
+  line-height: 1.2;
+  border-left: 1.5px solid #4A3320;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+/* ==================
+   悬浮按钮与弹窗
+   ================== */
+.action-button {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: #B63B2B;
+  color: #FFF;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 40px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(182, 59, 43, 0.4);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.action-button:hover {
+  background: #9A2F22;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(182, 59, 43, 0.5);
+}
+
+.action-button:active {
+  transform: translateY(0);
+}
+
+.action-button.generating {
+  background: #D5867D;
+  cursor: not-allowed;
+  transform: scale(0.98);
+}
+
+.btn-icon { font-size: 20px; }
+
+/* 预览弹窗 */
+.preview-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.preview-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  width: 90vw;
+  max-width: 500px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: slideUpModal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.preview-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.close-btn {
+  background: #f5f5f5;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.close-btn:hover { background: #e0e0e0; }
+
+.preview-img-container {
+  flex: 1;
+  overflow: auto;
+  border-radius: 8px;
+  background: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #eee;
+}
+
+.preview-img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  -webkit-touch-callout: default;
+}
+
+.preview-tip {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpModal {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 768px) {
+  .action-button {
+    bottom: 30px;
+    right: 20px;
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+}
