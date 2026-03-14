@@ -4,6 +4,7 @@ import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { initialMountains } from './data/mountains'
 import Sidebar from './components/Sidebar'
+import MapMarkers from './components/MapMarkers'
 import './App.css'
 
 // ─── 静态常量 ────────────────────────────────────────────────────────────────
@@ -13,59 +14,20 @@ const GEO_URLS = {
   city:     'https://geo.datav.aliyun.com/areas_v3/bound/100000_full_city.json'
 }
 
-// 生成对应状态颜色的 SVG 图钉 data URI
-function makePinSvg(color) {
-  const svg = `<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path d="M642.464889 252.604158c0-72.054059-58.411341-130.4654-130.4654-130.4654-72.053036 0-130.464377 58.411341-130.464377 130.4654 0 65.089437 47.668673 119.04121 109.998253 128.862903l0 520.393157 40.932248 0L532.465612 381.467061C594.796216 371.645368 642.464889 317.694619 642.464889 252.604158zM436.790576 214.232223c0-21.192671 17.180288-38.372959 38.371936-38.372959 21.192671 0 38.371936 17.180288 38.371936 38.372959 0 21.191648-17.179264 38.371936-38.371936 38.371936C453.96984 252.604158 436.790576 235.424894 436.790576 214.232223z" fill="${color}"/></svg>`
-  return 'image://' + 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg)
-}
-
-const PIN_SYMBOL = {
-  none:     makePinSvg('#C1B6A6'),
-  wishlist: makePinSvg('#d81e06'),
-  visited:  makePinSvg('#4A7C59')
-}
-
 const BORDER_STYLE = {
   province: { borderColor: '#E6D7B8', borderWidth: 1.0 },
   city:     { borderColor: '#D4C4A8', borderWidth: 0.8 }
 }
 
+// 主地图 scatter：只作为提供坐标的底座，不显示元素，全部UI由 React 覆盖层渲染
 const BASE_SCATTER_SERIES = {
   type: 'scatter',
   coordinateSystem: 'geo',
   geoIndex: 0,
-  symbol: PIN_SYMBOL.none, // 每个数据点会通过 data.symbol 单独覆盖
-  symbolSize: [40, 40],
-  symbolOffset: [0, '-50%'],
-  label: {
-    show: true,
-    position: 'top',
-    distance: 5,
-    formatter: (params) => {
-      const d = params.data
-      return `{icon|${d.icon}}\n{gap|}\n{nameBox|${d.name}}\n{descText|${d.label}}`
-    },
-    rich: {
-      icon: {
-        fontSize: 34, lineHeight: 34, align: 'center',
-        backgroundColor: '#FFFFFF', padding: [10, 10, 10, 10],
-        borderRadius: 40, borderWidth: 2, borderColor: '#F4EAD1',
-        shadowBlur: 8, shadowColor: 'rgba(0,0,0,0.1)'
-      },
-      gap: { height: 6 },
-      nameBox: {
-        backgroundColor: '#4A3320', color: '#F4EAD1',
-        padding: [4, 14, 4, 14], borderRadius: 15,
-        fontSize: 15, fontWeight: '900', align: 'center',
-        shadowBlur: 4, shadowColor: 'rgba(0,0,0,0.2)', shadowOffsetY: 2
-      },
-      descText: {
-        color: '#4A3320', fontSize: 13, fontWeight: 'bold',
-        align: 'center', padding: [4, 0, 0, 0]
-      }
-    }
-  }
+  symbolSize: 0,
+  label: { show: false }
 }
+
 
 const TOOLTIP_CONFIG = {
   show: true,
@@ -85,10 +47,13 @@ const TOOLTIP_CONFIG = {
     } else if (d.status === 'visited') {
       badge = `<span style="display:inline-block;margin-left:8px;padding:2px 6px;border-radius:4px;background:#E8F5E9;color:#4A7C59;font-size:12px;font-weight:bold;">✓ 已达</span>`
     }
+    const iconHtml = (d.icon.startsWith('/') || d.icon.startsWith('http'))
+      ? `<img src="${d.icon}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;margin-right:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" />`
+      : `<span style="font-size:24px;margin-right:8px;background:#fff;padding:4px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.05);">${d.icon}</span>`
     return `
       <div style="width:280px;font-family:sans-serif;white-space:normal;word-wrap:break-word;">
         <div style="display:flex;align-items:center;margin-bottom:8px;">
-          <span style="font-size:24px;margin-right:8px;background:#fff;padding:4px;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.05);">${d.icon}</span>
+          ${iconHtml}
           <span style="font-size:20px;font-weight:900;letter-spacing:1px;">${d.name}</span>
           ${badge}
         </div>
@@ -104,10 +69,12 @@ const TOOLTIP_CONFIG = {
 
 function App() {
   const chartRef = useRef(null)
+  const posterChartRef = useRef(null)
   const posterTemplateRef = useRef(null)
   const geoCache = useRef({})
 
   const [geoJson, setGeoJson] = useState(null)
+  const [mapReady, setMapReady] = useState(false)
   const [loading, setLoading] = useState(true)
   const [isSwitching, setIsSwitching] = useState(false)
   const [previewImage, setPreviewImage] = useState(null)
@@ -131,6 +98,7 @@ function App() {
     fetchAndCache('province').then(data => {
       echarts.registerMap('china', data)
       setGeoJson(data)
+      setMapReady(true)
       setLoading(false)
       fetchAndCache('city').catch(() => {})
     }).catch(() => setLoading(false))
@@ -177,13 +145,9 @@ function App() {
     }
   }, [mapLevel, showLabels, geoJson])
 
-  // 山峰数据变化：只更新 series data
+  // 山峰数据变化：只保留需展示的数据传递给ECharts进行坐标系测算
   const dynamicSeriesData = useMemo(() => {
-    return mountains.filter(m => m.visible).map(m => ({
-      ...m,
-      symbol: PIN_SYMBOL[m.status] ?? PIN_SYMBOL.none,
-      symbolSize: [40, 40],
-    }))
+    return mountains.filter(m => m.visible)
   }, [mountains])
 
   useEffect(() => {
@@ -194,10 +158,12 @@ function App() {
   }, [dynamicSeriesData, geoJson])
 
   const initialMapOption = useMemo(() => {
-    if (!geoJson) return {}
+    if (!geoJson || !mapReady) return {}
+    // 热重载时 ECharts 全局注册可能丢失，useMemo 重算时补充注册
+    echarts.registerMap('china', geoJson)
     return {
-      backgroundColor: '#E8DCC4',
-      tooltip: TOOLTIP_CONFIG,
+      backgroundColor: 'transparent',
+      tooltip: { show: false },
       geo: {
         map: 'china',
         zoom: 1.2,
@@ -215,10 +181,11 @@ function App() {
       animation: true,
       animationDurationUpdate: 300
     }
-  }, [geoJson])
+  }, [geoJson, mapReady])
 
   const posterMapOption = useMemo(() => {
-    if (!geoJson) return {}
+    if (!geoJson || !mapReady) return {}
+    echarts.registerMap('china', geoJson)
     const level = mapLevel
     const style = BORDER_STYLE[level]
     return {
@@ -296,15 +263,19 @@ function App() {
       </div>
 
       {/* 主地图 */}
-      <div className="home-map-container">
+      <div className="home-map-container" style={{ backgroundColor: '#E8DCC4' }}>
         <ReactECharts
           ref={chartRef}
           option={initialMapOption}
-          style={{ height: '100%', width: '100%' }}
+          style={{ height: '100%', width: '100%', filter: 'drop-shadow(6px 12px 18px rgba(120, 95, 75, 0.25))' }}
           opts={{ renderer: 'canvas' }}
           notMerge={false}
           lazyUpdate={true}
         />
+        {/* React 覆盖层：自定义山峰标注卡片 */}
+        {mapReady && (
+          <MapMarkers chartRef={chartRef} mountains={mountains} />
+        )}
       </div>
 
       {/* 生成海报按钮 */}
@@ -325,14 +296,18 @@ function App() {
             <p className="subtitle">Awakening Mountains</p>
           </header>
           <div className="poster-map-inner-container">
-            {geoJson && (
-              <ReactECharts
-                option={posterMapOption}
-                style={{ height: '100%', width: '100%' }}
-                opts={{ renderer: 'canvas' }}
-                notMerge={true}
-                lazyUpdate={false}
-              />
+            {mapReady && (
+              <>
+                <ReactECharts
+                  ref={posterChartRef}
+                  option={posterMapOption}
+                  style={{ height: '100%', width: '100%', filter: 'drop-shadow(6px 12px 18px rgba(120, 95, 75, 0.25))' }}
+                  opts={{ renderer: 'canvas' }}
+                  notMerge={true}
+                  lazyUpdate={false}
+                />
+                <MapMarkers chartRef={posterChartRef} mountains={mountains} />
+              </>
             )}
           </div>
           <footer className="poster-footer">

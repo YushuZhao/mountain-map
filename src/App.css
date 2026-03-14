@@ -175,7 +175,13 @@
   font-weight: 900;
   margin-bottom: 5px;
   letter-spacing: 2px;
-  text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+  /* 更立体的白色投影边框 + 向下的淡淡阴影，呼应设计图 */
+  text-shadow:
+    3px 3px 0px #FFF,
+   -1px -1px 0px #FFF,
+    1px -1px 0px #FFF,
+   -1px  1px 0px #FFF,
+    0px 8px 15px rgba(74, 51, 32, 0.15);
   display: flex;
   align-items: center;
 }
@@ -235,6 +241,216 @@
   padding-left: 10px;
   font-weight: bold;
 }
+
+/* ==================
+   地图标注覆盖层 (V2垂直徽章版)
+   ================== */
+.map-markers-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* 层本身不拦截，子元素单独开启 */
+  overflow: hidden;
+}
+
+/* 每个标注的物理锚点：对准地图坐标的中心 */
+.map-marker-anchor {
+  position: absolute;
+  /* 回归最原始的锚点，不做偏移，让图钉自己去对准这里 */
+  transform: translate(0, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+}
+
+/* 垂直胶囊卡片容器（相对定位容器） */
+.marker-v2 {
+  position: relative;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* 真正的地理位置点，图钉底部的尖尖对准坐标 (0,0) */
+.marker-v2-pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -100%); /* 针尖在底部正中，所以向左移50%，向上移100%对准原点 */
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  z-index: 4;
+}
+
+/* 徽章内容区域，整体向图钉的左侧偏移，避免互相遮挡 */
+.marker-v2-content {
+  position: absolute;
+  /* 拉近和图钉的距离 */
+  right: 5px;
+  /* 调整垂直位置，使其和图钉协调 */
+  bottom: -2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  /* 整体等比缩小一点点 (比如缩到原来的 85%)，同时设置缩放原点为右下角(靠近图钉的位置) */
+  transform: scale(0.85);
+  transform-origin: right bottom;
+}
+
+/* 圆形风景图外框 */
+.marker-v2-img-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #F4EAD1;
+  border: 3px solid #FFF; /* 白色精致描边 */
+  box-shadow: 0 4px 10px rgba(74, 51, 32, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.marker-v2-img-wrap--wishlist {
+  border-color: #FFF0F0;
+}
+
+.marker-v2-img-wrap--visited {
+  border-color: #E8F5E9;
+}
+
+/* 内部图片 */
+.marker-v2-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top; /* 取照片上方风景 */
+}
+
+/* emoji备用 */
+.marker-v2-emoji {
+  font-size: 32px;
+  line-height: 1;
+}
+
+/* 深色地名胶囊 */
+.marker-v2-name {
+  background: #4A3320;
+  color: #FFF;
+  font-size: 13px;
+  font-weight: 900;
+  padding: 3px 10px;
+  border-radius: 12px;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 6px rgba(74, 51, 32, 0.25);
+  white-space: nowrap;
+  z-index: 3;
+  margin-top: -8px; /* 让胶囊和图片稍微重叠一点，更紧凑 */
+}
+
+
+
+/* 底部：副标题 */
+.marker-v2-subtitle {
+  font-size: 11px;
+  color: #7A695B;
+  font-weight: 800;
+  /* 强大的白色描边，防止被地图底纹干扰 */
+  text-shadow:
+    1px 1px 0px rgba(255, 255, 255, 0.9),
+   -1px -1px 0px rgba(255, 255, 255, 0.9),
+    1px -1px 0px rgba(255, 255, 255, 0.9),
+   -1px  1px 0px rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+/* 悬浮详情弹窗 */
+.marker-tooltip {
+  position: absolute;
+  /* 弹窗居中悬浮在徽章上方 */
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
+  width: 260px;
+  background: rgba(248, 242, 230, 0.97);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 8px 24px rgba(74, 51, 32, 0.15);
+  pointer-events: none;
+  z-index: 100;
+  white-space: normal;
+}
+
+.marker-tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.marker-tooltip-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.marker-tooltip-emoji {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.marker-tooltip-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.marker-tooltip-name {
+  font-size: 18px;
+  font-weight: 900;
+  color: #4A3320;
+  letter-spacing: 1px;
+}
+
+.marker-tooltip-badge {
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.marker-tooltip-badge--wishlist {
+  background: #FFF0F0;
+  color: #B63B2B;
+}
+
+.marker-tooltip-badge--visited {
+  background: #E8F5E9;
+  color: #4A7C59;
+}
+
+.marker-tooltip-meta {
+  font-size: 12px;
+  color: #8C7B6B;
+  font-weight: bold;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(74, 51, 32, 0.1);
+}
+
+.marker-tooltip-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #555;
+}
+
+
 
 /* ==================
    悬浮按钮与弹窗

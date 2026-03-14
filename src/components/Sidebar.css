@@ -166,6 +166,13 @@
   font-size: 20px;
 }
 
+.m-icon-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 .m-hidden-mask {
   position: absolute;
   inset: 0;

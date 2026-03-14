@@ -36,7 +36,7 @@ export const initialMountains = [
   },
   {
     id: 'huang', name: '黄山', category: 'wuyue', value: [118.1542, 30.1337, 100],
-    label: '天下第一奇山', province: '安徽', icon: '🌲', status: 'wishlist', visible: true,
+    label: '天下第一奇山', province: '安徽', icon: '/src/assets/mountains/huang.jpg', status: 'wishlist', visible: true,
     description: '"五岳归来不看山，黄山归来不看岳"。以奇松、怪石、云海、温泉、冬雪"五绝"闻名于世，是水墨山水的现实写照。'
   },
   {
@@ -63,7 +63,7 @@ export const initialMountains = [
   },
   {
     id: 'ems', name: '峨眉山', category: 'buddhist', value: [103.3344, 29.5451, 100],
-    label: '云海佛光', province: '四川', icon: '🐒', status: 'wishlist', visible: true,
+    label: '云海佛光', province: '四川', icon: '/src/assets/mountains/ems.jpg', status: 'wishlist', visible: true,
     description: '普贤菩萨的道场。山势雄伟，秀甲天下。金顶的佛光、云海、日出是极其震撼的自然奇观，沿途还有灵猴相伴。'
   },
   {
@@ -75,12 +75,12 @@ export const initialMountains = [
   // ================= 自由探索 =================
   {
     id: 'fjs', name: '梵净山', category: 'others', value: [108.6923, 27.8982, 100],
-    label: '天空之城', province: '贵州', icon: '🍄', status: 'wishlist', visible: true,
+    label: '天空之城', province: '贵州', icon: '/src/assets/mountains/fjs.jpg', status: 'wishlist', visible: true,
     description: '武陵山脉的主峰，世界自然遗产。红云金顶拔地而起，蘑菇石傲然挺立。这里是一座拥有古老地质史的孤岛秘境。'
   },
   {
     id: 'wgs', name: '武功山', category: 'others', value: [114.1003, 27.4845, 100],
-    label: '云中草原', province: '江西', icon: '⛺', status: 'wishlist', visible: true,
+    label: '云中草原', province: '江西', icon: '/src/assets/mountains/wgs.jpg', status: 'wishlist', visible: true,
     description: '中国十大非著名山峰之一。拥有海拔1600米以上的十万亩高山草甸，是徒步和露营爱好者的天堂，云海星空绝美。'
   },
   {

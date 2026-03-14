@@ -73,7 +73,10 @@ function Sidebar({ mountains, setMountains, activeCategory, setActiveCategory })
             title="点击卡片可切换在地图上的显示/隐藏"
           >
             <div className="m-icon-wrapper">
-              <span className="m-icon">{m.icon}</span>
+              {m.icon.startsWith('/') || m.icon.startsWith('http')
+                ? <img src={m.icon} alt={m.name} className="m-icon-img" />
+                : <span className="m-icon">{m.icon}</span>
+              }
               {!m.visible && <div className="m-hidden-mask">✕</div>}
             </div>
 
