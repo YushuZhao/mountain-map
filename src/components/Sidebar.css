@@ -1,0 +1,249 @@
+.sidebar {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 360px;
+  max-height: calc(100vh - 60px);
+  background: rgba(248, 242, 230, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(74, 51, 32, 0.08), 0 1px 3px rgba(74, 51, 32, 0.05);
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: 24px 24px 16px;
+  position: relative;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
+  color: #4A3320;
+  letter-spacing: 1px;
+}
+
+.batch-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.batch-actions button {
+  background: rgba(74, 51, 32, 0.05);
+  border: 1px solid rgba(74, 51, 32, 0.1);
+  color: #8C7B6B;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: bold;
+}
+
+.batch-actions button:hover {
+  background: rgba(74, 51, 32, 0.1);
+  color: #4A3320;
+}
+
+.sidebar-subtitle {
+  margin: 6px 0 0 0;
+  font-size: 13px;
+  color: #8C7B6B;
+  font-weight: 500;
+}
+
+/* 修复 Tab 溢出和样式瑕疵 */
+.sidebar-tabs-container {
+  width: 100%;
+  padding: 0 16px 12px;
+}
+
+.sidebar-tabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 4px;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.sidebar-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #8C7B6B;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 600;
+}
+
+.tab-btn:hover:not(.active) {
+  color: #4A3320;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.tab-btn.active {
+  background: #FFFFFF;
+  color: #4A3320;
+  box-shadow: 0 2px 8px rgba(74, 51, 32, 0.08);
+}
+
+/* 重新设计山峰卡片 */
+.mountain-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mountain-list::-webkit-scrollbar {
+  width: 4px;
+}
+.mountain-list::-webkit-scrollbar-thumb {
+  background: rgba(74, 51, 32, 0.15);
+  border-radius: 4px;
+}
+
+.mountain-card {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(74, 51, 32, 0.03);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.mountain-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(74, 51, 32, 0.06);
+  border-color: rgba(74, 51, 32, 0.05);
+}
+
+.mountain-card.is-hidden {
+  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: none;
+  filter: grayscale(80%);
+}
+
+.m-icon-wrapper {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F8F2E6;
+  border-radius: 50%;
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.m-hidden-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.m-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.m-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.m-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: #333333;
+}
+
+.m-province {
+  font-size: 11px;
+  color: #999999;
+  font-weight: 500;
+}
+
+.m-label {
+  font-size: 12px;
+  color: #8C7B6B;
+}
+
+/* 状态切换按钮 */
+.status-toggle {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-toggle:hover {
+  transform: scale(1.05);
+}
+
+.status-toggle:active {
+  transform: scale(0.95);
+}
+
+.status-toggle.none {
+  background: #F0EBE1;
+  color: #9A8C78;
+  border: 1px dashed rgba(154, 140, 120, 0.4);
+}
+
+.status-toggle.wishlist {
+  background: #FFF0F0;
+  color: #B63B2B;
+  border: 1px solid transparent;
+}
+
+.status-toggle.visited {
+  background: #E8F5E9;
+  color: #4A7C59;
+  border: 1px solid transparent;
+}
