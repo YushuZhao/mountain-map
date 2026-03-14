@@ -11,7 +11,7 @@ export const initialMountains = [
   // ================= 三山五岳 =================
   {
     id: 'ts', name: '泰山', category: 'wuyue', value: [117.1, 36.25, 100],
-    label: '五岳独尊', province: '山东', icon: '⛰️', status: 'none', visible: false,
+    label: '五岳独尊', province: '山东', icon: '/src/assets/mountains/ts.jpg', status: 'visited', visible: true,
     description: '五岳之首，中华文明的象征。自古便有"泰山安，四海皆安"的说法。历代帝王封禅之地，十八盘步步高升，日出云海极为壮观。'
   },
   {
@@ -84,13 +84,18 @@ export const initialMountains = [
     description: '中国十大非著名山峰之一。拥有海拔1600米以上的十万亩高山草甸，是徒步和露营爱好者的天堂，云海星空绝美。'
   },
   {
+    id: 'cbs', name: '长白山', category: 'others', value: [128.0553, 42.0062, 100],
+    label: '关东第一山', province: '吉林', icon: '/src/assets/mountains/cbs.jpg', status: 'visited', visible: true,
+    description: '休眠火山，拥有奇特的火山口湖——天池。以“神山、圣水、奇林、仙果”等闻名，一年四季风光各异，冬季更是冰雪的童话世界。'
+  },
+  {
+    id: 'ljs', name: '老君山', category: 'others', value: [111.6483, 33.7228, 100],
+    label: '天下无双圣境', province: '河南', icon: '/src/assets/mountains/ljs.jpg', status: 'visited', visible: true,
+    description: '伏牛山的主峰，相传为道教始祖老子归隐修炼之地。峰林景观如刀劈斧削，金顶道观群屹立于群峰之巅，云海日出宛如仙境。'
+  },
+  {
     id: 'dcs', name: '稻城亚丁', category: 'others', value: [100.31, 28.38, 100],
     label: '蓝色星球净土', province: '四川', icon: '🏔️', status: 'none', visible: false,
     description: '这里有雪山、冰川、峡谷、森林、草甸、湖泊。被誉为"水蓝色星球上的最后一片净土"，三座神山巍峨圣洁。'
-  },
-  {
-    id: 'al', name: '冈仁波齐', category: 'others', value: [81.3, 31.07, 100],
-    label: '神山之王', province: '西藏', icon: '❄️', status: 'none', visible: false,
-    description: '多个宗教共同认定的"世界中心"。山顶终年积雪，呈现独特的对称金字塔形状。无数朝圣者一生向往的转山圣地。'
   }
 ];

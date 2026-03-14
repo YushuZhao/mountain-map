@@ -1,3 +1,8 @@
+:root {
+  /* 定义全局地图和海报的背景底色: 千里江山图 - 仿古绢丝色 */
+  --map-bg-color: #F2EFE8;
+}
+
 /* ==================
    全局与首页地图
    ================== */
@@ -13,7 +18,7 @@
   flex: 1;
   height: 100vh;
   position: relative;
-  background-color: #E8DCC4;
+  background-color: var(--map-bg-color);
 }
 
 /* 地图右上角控制面板 */
@@ -44,7 +49,7 @@
 .control-label {
   font-size: 13px;
   font-weight: 700;
-  color: #8C7B6B;
+  color: #8A9A39; /* 灰青色 */
 }
 
 .layer-toggles {
@@ -53,51 +58,85 @@
 }
 
 .layer-btn {
-  border: 1.5px solid rgba(74, 51, 32, 0.15);
+  border: 1.5px solid rgba(96, 107, 34, 0.15); /* 深黛色透明 */
   background: transparent;
   padding: 4px 12px;
   font-size: 12px;
   font-weight: bold;
-  color: #8C7B6B;
+  color: #8A9A39;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .layer-btn:hover {
-  border-color: rgba(74, 51, 32, 0.3);
-  color: #4A3320;
+  border-color: rgba(96, 107, 34, 0.3);
+  color: #606B22;
 }
 
 .layer-btn.active {
-  background: #4A3320;
-  border-color: #4A3320;
-  color: #F4EAD1;
+  background: #606B22; /* 深黛色 */
+  border-color: #606B22;
+  color: #F7F8F5;
 }
 
 .switch-btn {
   border: none;
-  background: rgba(74, 51, 32, 0.05);
+  background: rgba(96, 107, 34, 0.05);
   padding: 4px 16px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: bold;
-  color: #8C7B6B;
+  color: #8A9A39;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .switch-btn.active {
-  background: #E8F5E9;
-  color: #4A7C59;
+  background: #D9E5DF; /* 极浅石绿背景 */
+  color: #62A790; /* 石绿文字 */
 }
 
 .control-switching-hint {
   font-size: 11px;
-  color: #8C7B6B;
+  color: #8A9A39;
   text-align: center;
   padding: 2px 0;
   animation: pulse 1s ease-in-out infinite;
+}
+
+/* ==================
+   背景颜色选择器
+   ================== */
+.color-picker-trigger {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid #FFF;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.color-picker-trigger:hover {
+  transform: scale(1.1);
+}
+
+.color-picker-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 200;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(96, 107, 34, 0.15); /* 阴影改色 */
+  overflow: hidden;
+}
+
+.color-picker-cover {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  cursor: default;
 }
 
 @keyframes pulse {
@@ -112,7 +151,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #E8DCC4;
+  background-color: var(--map-bg-color);
   color: #4A3320;
 }
 
@@ -149,7 +188,7 @@
   /* 强制固定海报输出尺寸，保证生成的图片比例完美 */
   width: 900px;
   height: 1200px;
-  background-color: #F4EAD1;
+  background-color: var(--map-bg-color);
 }
 
 .poster-map-inner-container {
@@ -170,18 +209,18 @@
 }
 
 .poster-header h1 {
-  color: #4A3320;
-  font-size: 58px;
-  font-weight: 900;
+  font-family: "STXingkai", "STKaiti", "KaiTi", "Georgia", serif;
+  color: #62A790; /* 主标题用厚重的石绿色 */
+  font-size: 68px;
+  font-weight: normal;
   margin-bottom: 5px;
-  letter-spacing: 2px;
-  /* 更立体的白色投影边框 + 向下的淡淡阴影，呼应设计图 */
+  letter-spacing: 4px;
   text-shadow:
     3px 3px 0px #FFF,
    -1px -1px 0px #FFF,
     1px -1px 0px #FFF,
    -1px  1px 0px #FFF,
-    0px 8px 15px rgba(74, 51, 32, 0.15);
+    0px 8px 15px rgba(96, 107, 34, 0.2); /* 阴影也微调为偏绿 */
   display: flex;
   align-items: center;
 }
@@ -190,18 +229,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  background-color: #4A3320;
-  color: #F4EAD1;
-  border-radius: 50%;
-  font-size: 26px;
   margin-left: 12px;
-  font-weight: bold;
+  color: #C3BD4F; /* 旁边的小人图标换成朱砂红点缀！ */
 }
 
 .poster-header .subtitle {
-  color: #8C7B6B;
+  color: #8A9A39;
   font-size: 24px;
   font-weight: 500;
   font-family: Arial, sans-serif;
@@ -234,12 +267,13 @@
 .logo-sub {
   display: flex;
   flex-direction: column;
-  font-size: 12px;
-  color: #4A3320;
+  font-size: 16px;
+  color: #606B22;
   line-height: 1.2;
-  border-left: 1.5px solid #4A3320;
+  border-left: 1.5px solid #606B22;
   padding-left: 10px;
   font-weight: bold;
+  letter-spacing: 1px;
 }
 
 /* ==================
@@ -285,8 +319,8 @@
   position: absolute;
   /* 拉近和图钉的距离 */
   right: 5px;
-  /* 调整垂直位置，使其和图钉协调 */
-  bottom: -2px;
+  /* 再往下沉一点，让图钉的红头对准图片的中下部或者胶囊的顶部 */
+  bottom: -15px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -326,6 +360,9 @@
   height: 100%;
   object-fit: cover;
   object-position: center top; /* 取照片上方风景 */
+  /* 让浏览器在缩小大图时尽量保持锐利度 */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 /* emoji备用 */
@@ -369,18 +406,16 @@
 /* 悬浮详情弹窗 */
 .marker-tooltip {
   position: absolute;
-  /* 弹窗居中悬浮在徽章上方 */
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-bottom: 10px;
+  top: -20px;
+  left: 20px;
+
   width: 260px;
-  background: rgba(248, 242, 230, 0.97);
+  background: rgba(247, 248, 245, 0.97); /* 偏绿白的极淡底色 */
   border-radius: 12px;
   padding: 12px 14px;
-  box-shadow: 0 8px 24px rgba(74, 51, 32, 0.15);
+  box-shadow: 0 8px 24px rgba(96, 107, 34, 0.15);
   pointer-events: none;
-  z-index: 100;
+  z-index: 200;
   white-space: normal;
 }
 
@@ -414,7 +449,7 @@
 .marker-tooltip-name {
   font-size: 18px;
   font-weight: 900;
-  color: #4A3320;
+  color: #606B22; /* 深黛色 */
   letter-spacing: 1px;
 }
 
@@ -426,22 +461,22 @@
 }
 
 .marker-tooltip-badge--wishlist {
-  background: #FFF0F0;
-  color: #B63B2B;
+  background: #F9F8E8; /* 极淡的朱砂红 */
+  color: #C3BD4F; /* 朱砂红 */
 }
 
 .marker-tooltip-badge--visited {
-  background: #E8F5E9;
-  color: #4A7C59;
+  background: #EAF2EF; /* 极淡的石绿 */
+  color: #62A790; /* 石绿 */
 }
 
 .marker-tooltip-meta {
   font-size: 12px;
-  color: #8C7B6B;
+  color: #8A9A39; /* 灰青 */
   font-weight: bold;
   margin-bottom: 8px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(74, 51, 32, 0.1);
+  border-bottom: 1px solid rgba(96, 107, 34, 0.1);
 }
 
 .marker-tooltip-desc {
