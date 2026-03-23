@@ -83,6 +83,7 @@ function App() {
 
   const [mountains, setMountains] = useState(initialMountains)
   const [activeCategory, setActiveCategory] = useState('all')
+  const [comparing, setComparing] = useState(new Set())
 
   // 互斥单选
   const [mapLevel, setMapLevel] = useState('province') // 'province' | 'city'
@@ -254,6 +255,8 @@ function App() {
         setMountains={setMountains}
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
+        comparing={comparing}
+        setComparing={setComparing}
       />
 
       {/* 右上角地图控制面板 */}
