@@ -2,6 +2,7 @@ export const categories = [
   { id: 'all', name: '全部名山' },
   { id: 'wuyue', name: '三山五岳' },
   { id: 'buddhist', name: '佛教名山' },
+  { id: 'taoist', name: '道教名山' },
   { id: 'others', name: '自由探索' }
 ];
 
@@ -70,6 +71,28 @@ export const initialMountains = [
     id: 'jhs', name: '九华山', category: 'buddhist', value: [117.8, 30.48, 100],
     label: '莲花佛国', province: '安徽', elevation: 1342, climbingGain: 1000, icon: '🕯️', status: 'none', visible: false,
     description: '地藏菩萨的道场。山势如同一朵绽放的莲花，香火鼎盛，留存了众多肉身菩萨，是探寻佛教神秘文化的首选之地。'
+  },
+
+  // ================= 道教四大名山 =================
+  {
+    id: 'wds', name: '武当山', category: 'taoist', value: [111.0039, 32.4008, 100],
+    label: '天下第一仙山', province: '湖北', elevation: 1612, climbingGain: 1350, icon: '☯️', status: 'none', visible: false,
+    description: '道教圣地，武当武术发源地。金顶天柱峰云雾缭绕，紫霄宫、南岩宫等古建筑群依山而建，被誉为"天下第一仙山"。'
+  },
+  {
+    id: 'lhs', name: '龙虎山', category: 'taoist', value: [116.9658, 28.1011, 100],
+    label: '道教祖庭', province: '江西', elevation: 247, climbingGain: 200, icon: '🐉', status: 'none', visible: false,
+    description: '中国道教正一派祖庭，张天师修道之地。丹霞地貌奇绝，碧水丹山，悬棺葬俗神秘莫测，是道教文化的重要发源地。'
+  },
+  {
+    id: 'qys', name: '齐云山', category: 'taoist', value: [118.033, 29.8083, 100],
+    label: '江南小武当', province: '安徽', elevation: 585, climbingGain: 450, icon: '🌙', status: 'none', visible: false,
+    description: '道教四大名山之一，素有"江南小武当"之称。奇峰怪石、云雾飘渺，摩崖石刻遍布全山，道教文化氛围浓厚。'
+  },
+  {
+    id: 'qcs', name: '青城山', category: 'taoist', value: [103.5722, 30.9011, 100],
+    label: '青城天下幽', province: '四川', elevation: 1600, climbingGain: 900, icon: '🎋', status: 'none', visible: false,
+    description: '道教发祥地之一，以"幽"著称。苍翠欲滴的竹林与古朴道观相映成趣，张道陵于此创立正一道，是世界文化遗产。'
   },
 
   // ================= 自由探索 =================

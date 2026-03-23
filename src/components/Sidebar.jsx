@@ -56,7 +56,7 @@ function Sidebar({ mountains, setMountains, activeCategory, setActiveCategory, c
     <div className="sidebar">
       <div className="sidebar-header">
         <div className="header-top">
-          <h2>足迹日记</h2>
+          <h2>山岳图鉴</h2>
           <div className="batch-actions">
             <button onClick={() => handleBatchVisibility(true)} title="显示当前列表所有">👁️ 全显</button>
             <button onClick={() => handleBatchVisibility(false)} title="隐藏当前列表所有">🙈 全隐</button>
